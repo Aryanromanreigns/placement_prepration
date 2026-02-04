@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrepAI+ | Advanced Interview Platform</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    
+</head>
+<body>
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-logo"><i class="fa-solid fa-brain"></i></div>
+            <h2>Welcome to PrepAI+</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Master your next interview</p>
+            <input type="text" class="login-input" placeholder="Username" id="usernameInput" value="Aryan Kumar">
+            <input type="password" class="login-input" placeholder="Password" value="password123">
+            <button class="btn btn-primary" style="width: 100%" onclick="performLogin()">Access Dashboard</button>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app-container">
+        
+        <!-- SIDEBAR -->
+        <aside>
+            <div class="app-brand">
+                <i class="fa-solid fa-bolt"></i> PrepAI+
+            </div>
+            
+            <nav>
+                <div class="nav-btn active" onclick="navigate('dashboard', this)">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </div>
+                <div class="nav-btn" onclick="navigate('company-search', this)">
+                    <i class="fa-solid fa-building"></i> Company Search
+                </div>
+                <div class="nav-btn" onclick="navigate('coding', this)">
+                    <i class="fa-solid fa-code"></i> Coding Practice
+                </div>
+                <div class="nav-btn" onclick="navigate('analysis', this)">
+                    <i class="fa-solid fa-microphone-lines"></i> Communication
+                </div>
+            </nav>
+
+            <div class="turbo-mode" onclick="startTurboInterview()">
+                <i class="fa-solid fa-stopwatch"></i> Turbo Interview
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main>
+            
+            <!-- VIEW: DASHBOARD -->
+            <div id="dashboard" class="view active">
+                <h1>Dashboard</h1>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <h3>Current Target</h3>
+                        <div style="font-size: 1.5rem; color: var(--accent); margin-top: 0.5rem;" id="dashboardTargetCompany">Amazon</div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Focus: Arrays & Hashing</p>
+                    </div>
+                    <div class="card">
+                        <h3>Problems Solved</h3>
+                        <div style="font-size: 1.5rem; color: var(--success); margin-top: 0.5rem;">42 / 150</div>
+                        <div style="width: 100%; height: 6px; background: #334155; border-radius: 3px; margin-top: 10px;">
+                            <div style="width: 28%; height: 100%; background: var(--success); border-radius: 3px;"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Interview Readiness</h3>
+                        <div style="font-size: 1.5rem; color: var(--warning); margin-top: 0.5rem;">72%</div>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Based on last mock score</p>
+                    </div>
+                </div>
+
+                <h2>Recommended Path</h2>
+                <div class="card" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: var(--primary);">System Design Primer</h3>
+                        <p style="color: var(--text-muted);">Crucial for L4+ roles at Amazon & Google</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="navigate('company-search', document.querySelectorAll('.nav-btn')[1])">Start Learning</button>
+                </div>
+            </div>
+
+            <!-- VIEW: COMPANY SEARCH -->
+            <div id="company-search" class="view">
+                <div class="search-hero">
+                    <h1>Prepare for any company</h1>
+                    <p style="margin-bottom: 2rem;">Type a company name to unlock specific patterns, questions, and HR rounds.</p>
+                    <input type="text" class="search-input-lg" id="companyInput" placeholder="e.g., Amazon, Microsoft, Tesla, OpenAI..." onkeypress="if(event.key === 'Enter') selectCompany()">
+                    <button class="btn btn-primary" onclick="selectCompany()">Analyze Company</button>
+                </div>
+
+                <div id="companyResultArea" style="display:none;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="width: 60px; height: 60px; background: #334155; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div>
+                            <h2 id="selectedCompanyDisplay">Company Name</h2>
+                            <p style="color: var(--success);">Interview Pattern Detected</p>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="card">
+                            <h3><i class="fa-solid fa-code"></i> Coding Focus</h3>
+                            <ul id="companyTopics" style="list-style-position: inside; color: var(--text-muted); margin-top: 1rem; line-height: 1.8;">
+                                <!-- Topics injected here -->
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h3><i class="fa-solid fa-users"></i> Process</h3>
+                            <div id="companyProcess" style="color: var(--text-muted); line-height: 1.8;">
+                                <!-- Process injected here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <button class="btn btn-primary" onclick="navigate('coding', document.querySelectorAll('.nav-btn')[2])">Start Solving Questions <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: CODING PRACTICE -->
+            <div id="coding" class="view">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h1>Coding Workspace</h1>
+                    <div class="filters">
+                        <span id="currentCompanyLabel" style="color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                            <i class="fa-solid fa-bullseye"></i> Amazon
+                        </span>
+                        <select class="filter-select" id="difficultyFilter" onchange="renderQuestionList()">
+                            <option value="All">All Difficulties</option>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- List View Mode -->
+                <div id="questionListMode">
+                    <div id="questionsContainer">
+                        <!-- Questions injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Editor Mode (Hidden initially) -->
+                <div id="editorMode" class="split-view" style="display: none;">
+                    <div class="problem-desc">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h2 id="problemTitle">Problem Title</h2>
+                            <button class="btn btn-outline" onclick="closeEditor()">Back to List</button>
+                        </div>
+                        <div style="margin: 1rem 0;" id="problemTags"></div>
+                        <p id="problemDesc" style="color: var(--text-muted); line-height: 1.6;">Description...</p>
+                        
+                        <div style="margin-top: 2rem;">
+                            <h3>AI Insights</h3>
+                            <div class="card" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success);">
+                                <p><i class="fa-solid fa-check-circle"></i> <strong>Most Asked:</strong> This question appeared in 4 out of the last 5 interview cycles.</p>
+                                <p><i class="fa-solid fa-share-nodes"></i> <strong>Cross-Company:</strong> <span id="crossCompanyTags">Amazon, Google</span> also ask this.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-editor">
+                        <div style="display: flex; justify-content: space-between; color: #64748b; font-size: 0.8rem;">
+                            <span>solution.py</span>
+                            <button class="btn btn-primary" style="font-size: 0.8rem; padding: 4px 12px;" onclick="runCode()">Run Code</button>
+                        </div>
+                        <textarea class="code-area" id="codeArea" spellcheck="false">def solve():
+    # Write your code here
+    pass
+                        </textarea>
+                        <div id="consoleOutput" class="console">Ready to run...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: ANALYSIS -->
+            <div id="analysis" class="view">
+                <h1>Communication Analysis</h1>
+                <div class="card" style="text-align: center; max-width: 600px; margin: 2rem auto;">
+                    <h3>Voice Analysis</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Read the introduction prompt. We will analyze pauses, fillers, and speed.</p>
+                    <button id="recordBtn" class="btn btn-primary" style="width: 80px; height: 80px; border-radius: 50%; font-size: 1.5rem;" onclick="toggleRecord()">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                    <p id="recordStatus" style="margin-top: 1rem;">Click to Record</p>
+                    
+                    <div id="analysisResults" style="display: none; margin-top: 2rem; text-align: left;">
+                        <div style="display: flex; gap: 1rem;">
+                            <div class="stat-box" style="flex:1; background: #0f172a; padding: 1rem; border-radius: 8px;">
+                                <h4>Pauses</h4>
+                                <div style="font-size: 1.5rem; color: var(--danger);" id="pauseCount">0</div>
+                            </div>
+                            <div class="stat-box" style="flex:1; background: #0f172a; padding: 1rem; border-radius: 8px;">
+                                <h4>Fillers</h4>
+                                <div style="font-size: 1.5rem; color: var(--warning);" id="fillerCount">0</div>
+                            </div>
+                            <div class="stat-box" style="flex:1; background: #0f172a; padding: 1rem; border-radius: 8px;">
+                                <h4>Speed</h4>
+                                <div style="font-size: 1.5rem; color: var(--success);" id="speechSpeed">WPM</div>
+                            </div>
+                        </div>
+                        <div class="card" style="margin-top: 1rem; border-color: var(--accent);">
+                            <h4><i class="fa-solid fa-robot"></i> AI Coach:</h4>
+                            <p style="color: var(--text-muted);" id="coachText">Good clarity, but try to reduce "Umm" usage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TURBO INTERVIEW MODAL -->
+            <div id="turboModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 1500; align-items: center; justify-content: center;">
+                <div class="turbo-container">
+                    <div style="color: var(--danger); font-weight: 700; letter-spacing: 2px; margin-bottom: 1rem;">TURBO MODE</div>
+                    <div class="timer" id="turboTimer">00:30</div>
+                    <div class="question-flash" id="turboQuestion">Explain PolyMorphism in 1 minute.</div>
+                    
+                    <div class="wave" id="turboWave" style="display:none;">
+                        <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    </div>
+
+                    <button id="turboBtn" class="btn btn-primary" onclick="handleTurboAction()">Start Speaking</button>
+                    <button class="btn btn-outline" style="margin-top: 1rem;" onclick="endTurbo()">Exit</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-circle-info" style="color: var(--accent);"></i>
+        <span id="toastMessage">Notification</span>
+    </div>
+
+    
+<script src="script.js"></script>
+</body>
+</html>
